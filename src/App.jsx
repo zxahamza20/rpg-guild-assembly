@@ -1,10 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import GuildHall from './pages/GuildHall/GuildHall';
-import CreateAdventurer from './pages/CreateAdventurer/CreateAdventurer';
-import AdventurerDetail from './pages/AdventurerDetail/AdventurerDetail';
-import EditAdventurer from './pages/EditAdventurer/EditAdventurer';
+import GuildHall from './pages/guildHall';
+import CreateAdventurer from './pages/createAdventurer';
+import AdventurerDetail from './pages/adventureretail';
+import EditAdventurer from './pages/editAdventurer';
 import './App.css';
 
 function App() {
