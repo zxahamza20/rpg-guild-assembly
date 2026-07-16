@@ -1,17 +1,17 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import GuildHall from './pages/guildHall';
-import CreateAdventurer from './pages/createAdventurer';
-import AdventurerDetail from './pages/adventureretail';
-import EditAdventurer from './pages/editAdventurer';
+import Sidebar from './components/Sidebar';
+import GuildHall from './pages/GuildHall';
+import CreateAdventurer from './pages/CreateAdventurer';
+import AdventurerDetail from './pages/AdventurerDetail';
+import EditAdventurer from './pages/EditAdventurer';
 import './App.css';
 
 function App() {
   return (
     <Router>
       <div className="app-container">
-        <Navbar />
+        <Sidebar />
         <main className="main-content">
           <Routes>
             <Route path="/" element={<GuildHall />} />
