@@ -95,8 +95,8 @@ const AdventurerDetail = () => {
       <div className="hero-details-bg"></div>
 
       <div className="detail-nav">
-        <Link to="/guild-hall" className="btn-secondary">
-          ← Back to Roster
+        <Link to="/guild-hall" className="btn-back-guild">
+          🏰 Back to Guild Hall
         </Link>
       </div>
 

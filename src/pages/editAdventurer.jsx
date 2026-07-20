@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom'; // Add Link import
 import { supabase } from '../supabaseClient';
 import './EditAdventurer.css';
 
@@ -79,6 +79,18 @@ const EditAdventurer = () => {
   return (
     <div className="create-container">
       <div className="recruit-page-bg"></div>
+
+      {/* Add navigation row with two buttons */}
+      <div className="form-nav">
+        <div className="nav-buttons">
+          <Link to="/guild-hall" className="btn-back">
+            ← Back to Guild Hall
+          </Link>
+          <Link to={`/adventurer/${id}`} className="btn-back btn-back-profile">
+            👤 Back to Profile
+          </Link>
+        </div>
+      </div>
 
       <h2>⚙️ Edit Adventurer Record</h2>
       <p className="form-subtitle">Update parameters for {formData.name || 'Hero'}.</p>

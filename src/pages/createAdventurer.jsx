@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom'; // Add Link import
 import { supabase } from '../supabaseClient';
 import './CreateAdventurer.css';
 
@@ -48,6 +48,13 @@ const CreateAdventurer = () => {
   return (
     <div className="create-container">
       <div className="recruit-page-bg"></div>
+
+      {/* Add navigation row */}
+      <div className="form-nav">
+        <Link to="/guild-hall" className="btn-back">
+          ← Back to Guild Hall
+        </Link>
+      </div>
 
       <h2>✨ Register New Adventurer</h2>
       <p className="form-subtitle">Enlist a hero to join the ranks of Zenith Aegis.</p>

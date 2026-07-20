@@ -24,6 +24,27 @@
   margin-bottom: 1.5rem;
 }
 
+/* New button style for Back to Guild Hall */
+.btn-back-guild {
+  display: inline-block;
+  background-color: rgba(37, 37, 51, 0.8);
+  color: #e5e7eb;
+  padding: 0.6rem 1.25rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-back-guild:hover {
+  background-color: rgba(55, 55, 75, 0.9);
+  color: #ffffff;
+  transform: translateX(-2px);
+}
+
 .hero-profile-card {
   background-color: rgba(17, 24, 39, 0.65);
   border: 1px solid rgba(255, 255, 255, 0.15);
