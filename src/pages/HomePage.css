@@ -1,0 +1,123 @@
+.home-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.hero-banner {
+  background: linear-gradient(135deg, #181824 0%, #0d0d12 100%);
+  border: 1px solid #2d2d3d;
+  border-radius: 16px;
+  padding: 3.5rem 2.5rem;
+  text-align: center;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+  margin-bottom: 2.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-badge {
+  display: inline-block;
+  background-color: #4f46e520;
+  color: #818cf8;
+  border: 1px solid #6366f1;
+  padding: 0.35rem 1rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 1.25rem;
+}
+
+.guild-title {
+  font-size: 2.8rem;
+  margin: 0 0 0.75rem 0;
+  color: #f3f4f6;
+  letter-spacing: -0.5px;
+}
+
+.guild-tagline {
+  color: #9ca3af;
+  font-style: italic;
+  font-size: 1.15rem;
+  margin: 0 0 2rem 0;
+}
+
+.hero-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1.25rem;
+}
+
+.btn-enter-hall {
+  background-color: #4f46e5;
+  color: white;
+  padding: 0.9rem 1.75rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.4);
+}
+
+.btn-enter-hall:hover {
+  background-color: #6366f1;
+  transform: translateY(-2px);
+}
+
+.btn-recruit-home {
+  background-color: #252533;
+  color: #f3f4f6;
+  padding: 0.9rem 1.75rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  border: 1px solid #374151;
+}
+
+.btn-recruit-home:hover {
+  background-color: #323246;
+  transform: translateY(-2px);
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.detail-card {
+  background-color: #16161f;
+  border: 1px solid #2d2d3d;
+  border-radius: 12px;
+  padding: 1.75rem;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.detail-card:hover {
+  transform: translateY(-3px);
+  border-color: #4f46e5;
+}
+
+.card-icon {
+  font-size: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.detail-card h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.25rem;
+  color: #f3f4f6;
+}
+
+.detail-card p {
+  color: #9ca3af;
+  line-height: 1.6;
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.detail-card strong {
+  color: #e5e7eb;
+}
