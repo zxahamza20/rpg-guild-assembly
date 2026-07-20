@@ -137,11 +137,16 @@ const GuildHall = () => {
                 <div className="card-shadow"></div>
                 
                 <div className="card-header">
-                  <span className={`element-tag ${getElementBadgeClass(elements[0] || hero.element)}`}>
-                    {elements.length > 1 ? 
-                      `${elements.slice(0, 2).join(' ')} +${elements.length - 2}` : 
-                      (elements[0] || hero.element)}
-                  </span>
+                  <div className="element-bubbles">
+                    {elements.map((el, index) => (
+                      <span 
+                        key={index}
+                        className={`element-tag ${getElementBadgeClass(el)}`}
+                      >
+                        {el}
+                      </span>
+                    ))}
+                  </div>
                   <span className={`rank-tag rank-${hero.rank}`}>
                     {hero.rank}
                   </span>
@@ -151,11 +156,6 @@ const GuildHall = () => {
                   <h3>{hero.name}</h3>
                   <p className="hero-class">Class: <strong>{hero.class}</strong></p>
                   <p className="hero-weapon">Primary Weapon: <strong>{hero.weapon}</strong></p>
-                  {elements.length > 1 && (
-                    <p className="hero-weapon" style={{ fontSize: '0.8rem', color: '#6b7280' }}>
-                      Elements: {elements.join(', ')}
-                    </p>
-                  )}
                 </div>
 
                 <div className="card-actions">
