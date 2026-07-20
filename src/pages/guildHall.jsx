@@ -79,9 +79,14 @@ const GuildHall = () => {
             {adventurers.length} {adventurers.length === 1 ? 'Hero' : 'Heroes'} currently stationed at the guild.
           </p>
         </div>
-        <Link to="/create" className="btn-primary">
-          ✨ Recruit Hero
-        </Link>
+        <div style={{ display: 'flex', gap: '0.75rem' }}>
+          <Link to="/" className="btn-secondary" style={{ marginTop: 0 }}>
+            🏠 Guild HQ
+          </Link>
+          <Link to="/create" className="btn-primary">
+            ✨ Recruit Hero
+          </Link>
+        </div>
       </header>
 
       {/* Guild Analytics Banner */}

@@ -8,7 +8,7 @@ const Sidebar = () => {
   return (
     <aside className="sidebar">
       <div className="sidebar-logo">
-        <Link to="/">⚔️ RPG Guild</Link>
+        <Link to="/">⚔️ Zenith Aegis</Link>
       </div>
       
       <ul className="sidebar-links">
@@ -16,6 +16,14 @@ const Sidebar = () => {
           <Link 
             to="/" 
             className={location.pathname === '/' ? 'active' : ''}
+          >
+            🏠 Guild HQ
+          </Link>
+        </li>
+        <li>
+          <Link 
+            to="/guild-hall" 
+            className={location.pathname === '/guild-hall' ? 'active' : ''}
           >
             🏰 Guild Hall
           </Link>
