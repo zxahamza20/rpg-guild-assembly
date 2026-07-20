@@ -5,6 +5,8 @@ import './HomePage.css';
 const HomePage = () => {
   return (
     <div className="home-container">
+      <div className="home-page-bg"></div>
+
       <section className="hero-banner">
         <div className="hero-badge">⚔️ Official Guild Headquarters</div>
         <h1 className="guild-title">The Order of the Zenith Aegis</h1>
@@ -21,7 +23,6 @@ const HomePage = () => {
       </section>
 
       <section className="details-grid">
-        
         <div className="detail-card">
           <div className="card-icon">📜</div>
           <h3>Guild History</h3>
@@ -37,9 +38,8 @@ const HomePage = () => {
           <div className="card-icon">🏰</div>
           <h3>Headquarters Location</h3>
           <p>
-            <strong>The Obsidian Citadel of Aethergard</strong><br />
-            Perched atop the shattered peaks of the Frostveil Spire, overlooking the Eternal Mist Valleys. 
-            Protected by ancient arcane wards and accessible only via griffon transport or the Sky-Bridge.
+            <strong>The Spired Citadel of Aethergard</strong><br />
+            Framed by ancient stone archways and glowing runic lanterns, the citadel rises above the jagged coastal cliffs of the Mistveiled Gulf. Accessible through a cobblestone pass overlooking the tranquil, mountain-ringed bay below.
           </p>
         </div>
 
@@ -60,7 +60,6 @@ const HomePage = () => {
             recruiting elemental mages, heavy armored tanks, and frontline clerics to prepare for the upcoming expedition.
           </p>
         </div>
-
       </section>
     </div>
   );

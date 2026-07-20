@@ -1,6 +1,21 @@
 .guild-hall-container {
   max-width: 1100px;
   margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.guild-hall-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: 
+    linear-gradient(180deg, rgba(13, 13, 18, 0.3) 0%, rgba(13, 13, 18, 0.5) 100%),
+    url('../assets/guildHallBg.jpeg') no-repeat center center / cover;
+  z-index: -1;
+  pointer-events: none;
 }
 
 .guild-header {
@@ -15,14 +30,15 @@
   margin: 0;
   color: #f3f4f6;
   letter-spacing: -0.5px;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
 }
 
 .subtitle {
-  color: #9ca3af;
+  color: #e5e7eb;
   margin-top: 0.25rem;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
 }
 
-/* Stats Banner */
 .stats-banner {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -31,17 +47,18 @@
 }
 
 .stat-card {
-  background-color: #16161f;
-  border: 1px solid #2d2d3d;
+  background-color: rgba(17, 24, 39, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   padding: 1.25rem;
   border-radius: 10px;
   text-align: center;
+  backdrop-filter: blur(8px);
 }
 
 .stat-label {
   display: block;
   font-size: 0.75rem;
-  color: #9ca3af;
+  color: #d1d5db;
   text-transform: uppercase;
   letter-spacing: 1px;
   margin-bottom: 0.25rem;
@@ -53,14 +70,14 @@
   color: #f3f4f6;
 }
 
-/* Status & Empty States */
 .status-message, .empty-state {
   text-align: center;
   padding: 5rem 2rem;
-  background-color: #16161f;
+  background-color: rgba(17, 24, 39, 0.65);
   border-radius: 12px;
-  border: 1px dashed #2d2d3d;
-  color: #9ca3af;
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+  color: #e5e7eb;
+  backdrop-filter: blur(8px);
 }
 
 .empty-icon {
@@ -77,7 +94,6 @@
   50% { opacity: 0.4; }
 }
 
-/* Adventurers Grid */
 .adventurers-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -85,14 +101,15 @@
 }
 
 .adventurer-card {
-  background-color: #16161f;
-  border: 1px solid #2d2d3d;
+  background-color: rgba(17, 24, 39, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 12px;
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(8px);
 }
 
 .adventurer-card:hover {
@@ -100,7 +117,6 @@
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.6);
 }
 
-/* Elemental Borders on Hover */
 .border-fire:hover { border-color: #ef4444; }
 .border-water:hover { border-color: #3b82f6; }
 .border-earth:hover { border-color: #22c55e; }
@@ -118,7 +134,7 @@
 .rank-tag {
   font-size: 0.8rem;
   font-weight: bold;
-  background-color: #252533;
+  background-color: rgba(37, 37, 51, 0.8);
   color: #d1d5db;
   padding: 0.2rem 0.6rem;
   border-radius: 20px;
@@ -174,7 +190,7 @@
 }
 
 .btn-view {
-  background-color: #252533;
+  background-color: rgba(37, 37, 51, 0.8);
   color: #e5e7eb;
 }
 
@@ -203,8 +219,7 @@
 
 .btn-secondary {
   display: inline-block;
-  margin-top: 1rem;
-  background-color: #252533;
+  background-color: rgba(37, 37, 51, 0.8);
   color: white;
   padding: 0.75rem 1.25rem;
   border-radius: 8px;

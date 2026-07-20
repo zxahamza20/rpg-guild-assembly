@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import './EditAdventurer.css';
 
@@ -7,22 +7,18 @@ const EditAdventurer = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const [loading, setLoading] = useState(true);
-  const [isUpdating, setIsUpdating] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
-
   const [formData, setFormData] = useState({
     name: '',
-    class: '',
-    weapon: '',
-    element: '',
+    class: 'Warrior',
+    element: 'Fire',
     rank: 'Bronze',
-    backstory: '',
+    weapon: '',
+    backstory: ''
   });
 
-  const classes = ['Warrior', 'Mage', 'Rogue', 'Cleric'];
-  const elements = ['Fire', 'Water', 'Earth', 'Air', 'Light', 'Dark'];
-  const ranks = ['Bronze', 'Silver', 'Gold', 'Platinum'];
+  const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
   useEffect(() => {
     const fetchAdventurer = async () => {
@@ -35,25 +31,15 @@ const EditAdventurer = () => {
           .single();
 
         if (error) throw error;
-
-        if (data) {
-          setFormData({
-            name: data.name || '',
-            class: data.class || '',
-            weapon: data.weapon || '',
-            element: data.element || '',
-            rank: data.rank || 'Bronze',
-            backstory: data.backstory || '',
-          });
-        }
-      } catch (error) {
-        console.error('Error loading adventurer details:', error);
+        if (data) setFormData(data);
+      } catch (err) {
+        setErrorMsg('Failed to fetch adventurer details.');
       } finally {
         setLoading(false);
       }
     };
 
-    if (id) fetchAdventurer();
+    fetchAdventurer();
   }, [id]);
 
   const handleChange = (e) => {
@@ -61,194 +47,119 @@ const EditAdventurer = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleOptionClick = (field, value) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-  };
-
-  const handleUpdate = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!formData.name || !formData.class || !formData.weapon || !formData.element) {
-      alert('⚠️ Please complete all fields before saving changes!');
-      return;
-    }
-
-    setIsUpdating(true);
+    setErrorMsg('');
 
     try {
+      setSubmitting(true);
       const { error } = await supabase
         .from('adventurers')
-        .update({
-          name: formData.name,
-          class: formData.class,
-          weapon: formData.weapon,
-          element: formData.element,
-          rank: formData.rank,
-          backstory: formData.backstory,
-        })
+        .update(formData)
         .eq('id', id);
 
       if (error) throw error;
-
-      navigate('/');
-    } catch (error) {
-      console.error('Error updating adventurer:', error);
-      alert('Failed to update adventurer records. Check console for details.');
+      navigate(`/adventurer/${id}`);
+    } catch (err) {
+      setErrorMsg(err.message || 'Failed to update adventurer.');
     } finally {
-      setIsUpdating(false);
-    }
-  };
-
-  const handleDelete = async () => {
-    const confirmBanish = window.confirm(
-      `⚠️ Are you sure you want to banish ${formData.name} from the guild? This action cannot be undone.`
-    );
-
-    if (!confirmBanish) return;
-
-    setIsDeleting(true);
-
-    try {
-      const { error } = await supabase
-        .from('adventurers')
-        .delete()
-        .eq('id', id);
-
-      if (error) throw error;
-
-      navigate('/');
-    } catch (error) {
-      console.error('Error deleting adventurer:', error);
-      alert('Failed to banish adventurer. Check console for details.');
-    } finally {
-      setIsDeleting(false);
+      setSubmitting(false);
     }
   };
 
   if (loading) {
     return (
-      <div className="edit-container">
-        <div className="status-message">
-          <p>📜 Fetching Guild Credentials...</p>
-        </div>
+      <div className="create-container">
+        <div className="recruit-page-bg"></div>
+        <p className="pulse-text">📜 Retrieving Hero Record...</p>
       </div>
     );
   }
 
   return (
-    <div className="edit-container">
-      <div className="edit-header">
-        <h2>⚙️ Modify Adventurer Registration</h2>
-        <p className="subtitle">Update records or banish this hero from the guild ledger.</p>
-      </div>
+    <div className="create-container">
+      <div className="recruit-page-bg"></div>
 
-      <form onSubmit={handleUpdate} className="edit-form">
-        
+      <h2>⚙️ Edit Adventurer Record</h2>
+      <p className="form-subtitle">Update parameters for {formData.name || 'Hero'}.</p>
+
+      {errorMsg && <div className="error-banner">{errorMsg}</div>}
+
+      <form onSubmit={handleSubmit} className="hero-form">
         <div className="form-group">
-          <label htmlFor="name">Adventurer Name</label>
+          <label htmlFor="name">Hero Name *</label>
           <input
             type="text"
             id="name"
             name="name"
             value={formData.name}
             onChange={handleChange}
-            autoComplete="off"
+            required
           />
         </div>
 
-        <div className="form-group">
-          <label htmlFor="weapon">Primary Weapon</label>
-          <input
-            type="text"
-            id="weapon"
-            name="weapon"
-            value={formData.weapon}
-            onChange={handleChange}
-            autoComplete="off"
-          />
+        <div className="form-row">
+          <div className="form-group">
+            <label htmlFor="class">Class</label>
+            <select id="class" name="class" value={formData.class} onChange={handleChange}>
+              <option value="Warrior">Warrior</option>
+              <option value="Mage">Mage</option>
+              <option value="Rogue">Rogue</option>
+              <option value="Cleric">Cleric</option>
+            </select>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="element">Affiliated Element</label>
+            <select id="element" name="element" value={formData.element} onChange={handleChange}>
+              <option value="Fire">Fire</option>
+              <option value="Water">Water</option>
+              <option value="Earth">Earth</option>
+              <option value="Air">Air</option>
+              <option value="Light">Light</option>
+              <option value="Dark">Dark</option>
+            </select>
+          </div>
+        </div>
+
+        <div className="form-row">
+          <div className="form-group">
+            <label htmlFor="rank">Guild Rank</label>
+            <select id="rank" name="rank" value={formData.rank} onChange={handleChange}>
+              <option value="Bronze">Bronze</option>
+              <option value="Silver">Silver</option>
+              <option value="Gold">Gold</option>
+              <option value="Platinum">Platinum</option>
+            </select>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="weapon">Primary Weapon *</label>
+            <input
+              type="text"
+              id="weapon"
+              name="weapon"
+              value={formData.weapon}
+              onChange={handleChange}
+              required
+            />
+          </div>
         </div>
 
         <div className="form-group">
-          <label htmlFor="backstory">Guild Backstory / Notes</label>
+          <label htmlFor="backstory">Backstory / Origin</label>
           <textarea
             id="backstory"
             name="backstory"
-            rows="3"
-            placeholder="Write a custom backstory or notes for this hero..."
+            rows="4"
             value={formData.backstory}
             onChange={handleChange}
           />
         </div>
 
-        <div className="form-group">
-          <label>Class</label>
-          <div className="options-grid">
-            {classes.map((cls) => (
-              <div
-                key={cls}
-                className={`option-card ${formData.class === cls ? 'selected' : ''}`}
-                onClick={() => handleOptionClick('class', cls)}
-              >
-                {cls}
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="form-group">
-          <label>Element Mastery</label>
-          <div className="options-grid">
-            {elements.map((el) => (
-              <div
-                key={el}
-                className={`option-card ${formData.element === el ? 'selected' : ''}`}
-                onClick={() => handleOptionClick('element', el)}
-              >
-                {el}
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="form-group">
-          <label>Guild Rank</label>
-          <div className="options-grid">
-            {ranks.map((r) => (
-              <div
-                key={r}
-                className={`option-card ${formData.rank === r ? 'selected' : ''}`}
-                onClick={() => handleOptionClick('rank', r)}
-              >
-                {r}
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="form-actions">
-          <button
-            type="submit"
-            className="btn-update"
-            disabled={isUpdating || isDeleting}
-          >
-            {isUpdating ? 'Saving Changes...' : '💾 Save Changes'}
-          </button>
-
-          <button
-            type="button"
-            className="btn-delete"
-            onClick={handleDelete}
-            disabled={isUpdating || isDeleting}
-          >
-            {isDeleting ? 'Banishing...' : '🔥 Banish Hero'}
-          </button>
-        </div>
-
-        <div className="back-link-wrapper">
-          <Link to={`/adventurer/${id}`} className="link-cancel">
-            Cancel & Return to Profile
-          </Link>
-        </div>
+        <button type="submit" className="btn-submit" disabled={submitting}>
+          {submitting ? 'Updating...' : '💾 Save Changes'}
+        </button>
       </form>
     </div>
   );

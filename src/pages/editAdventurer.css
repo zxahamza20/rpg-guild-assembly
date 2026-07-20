@@ -8,6 +8,21 @@
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
+.recruit-page-bg {
+  position: fixed;
+  top: 0;
+  left: 240px;
+  right: 0;
+  bottom: 0;
+  width: calc(100vw - 240px);
+  height: 100vh;
+  background: 
+    linear-gradient(180deg, rgba(13, 13, 18, 0.25) 0%, rgba(13, 13, 18, 0.45) 100%),
+    url('../assets/form.jpeg') no-repeat center center / cover;
+  z-index: 0;
+  pointer-events: none;
+}
+
 .edit-header h2 {
   margin-top: 0;
   margin-bottom: 0.5rem;

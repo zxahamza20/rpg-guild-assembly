@@ -5,145 +5,132 @@ import './CreateAdventurer.css';
 
 const CreateAdventurer = () => {
   const navigate = useNavigate();
-  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const [formData, setFormData] = useState({
     name: '',
-    class: '',
+    class: 'Warrior',
+    element: 'Fire',
+    rank: 'Bronze',
     weapon: '',
-    element: '',
-    rank: 'Bronze', 
+    backstory: ''
   });
 
-  const classes = ['Warrior', 'Mage', 'Rogue', 'Cleric'];
-  const elements = ['Fire', 'Water', 'Earth', 'Air', 'Light', 'Dark'];
-  const ranks = ['Bronze', 'Silver', 'Gold', 'Platinum'];
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleOptionClick = (field, value) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-  };
-
   const handleSubmit = async (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
+    setErrorMsg('');
 
-    if (!formData.name || !formData.class || !formData.weapon || !formData.element) {
-      alert('⚠️ Please complete all fields to recruit this hero!');
+    if (!formData.name.trim() || !formData.weapon.trim()) {
+      setErrorMsg('Please fulfill all required fields (Name & Weapon).');
       return;
     }
 
-    setIsSubmitting(true);
-
     try {
-      const { error } = await supabase
-        .from('adventurers')
-        .insert([
-          {
-            name: formData.name,
-            class: formData.class,
-            weapon: formData.weapon,
-            element: formData.element,
-            rank: formData.rank,
-          },
-        ]);
+      setLoading(true);
+      const { error } = await supabase.from('adventurers').insert([formData]);
 
       if (error) throw error;
-
-      navigate('/');
-    } catch (error) {
-      console.error('Error recruiting adventurer:', error);
-      alert('Failed to recruit adventurer. Check console for details.');
+      navigate('/guild-hall');
+    } catch (err) {
+      setErrorMsg(err.message || 'Failed to submit adventurer registration.');
     } finally {
-      setIsSubmitting(false);
+      setLoading(false);
     }
   };
 
   return (
     <div className="create-container">
-      <h2>✨ Recruit a New Hero</h2>
-      <p className="subtitle">Set their attributes to prepare them for the guild.</p>
+      <div className="recruit-page-bg"></div>
 
-      <form onSubmit={handleSubmit} className="create-form">
+      <h2>✨ Register New Adventurer</h2>
+      <p className="form-subtitle">Enlist a hero to join the ranks of Zenith Aegis.</p>
+
+      {errorMsg && <div className="error-banner">{errorMsg}</div>}
+
+      <form onSubmit={handleSubmit} className="hero-form">
         <div className="form-group">
-          <label htmlFor="name">Adventurer Name</label>
+          <label htmlFor="name">Hero Name *</label>
           <input
             type="text"
             id="name"
             name="name"
-            placeholder="e.g. Arthur Pendragon"
             value={formData.name}
             onChange={handleChange}
-            autoComplete="off"
+            placeholder="e.g. Kaelen Shadowblade"
+            required
           />
         </div>
 
+        <div className="form-row">
+          <div className="form-group">
+            <label htmlFor="class">Class</label>
+            <select id="class" name="class" value={formData.class} onChange={handleChange}>
+              <option value="Warrior">Warrior</option>
+              <option value="Mage">Mage</option>
+              <option value="Rogue">Rogue</option>
+              <option value="Cleric">Cleric</option>
+            </select>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="element">Affiliated Element</label>
+            <select id="element" name="element" value={formData.element} onChange={handleChange}>
+              <option value="Fire">Fire</option>
+              <option value="Water">Water</option>
+              <option value="Earth">Earth</option>
+              <option value="Air">Air</option>
+              <option value="Light">Light</option>
+              <option value="Dark">Dark</option>
+            </select>
+          </div>
+        </div>
+
+        <div className="form-row">
+          <div className="form-group">
+            <label htmlFor="rank">Guild Rank</label>
+            <select id="rank" name="rank" value={formData.rank} onChange={handleChange}>
+              <option value="Bronze">Bronze</option>
+              <option value="Silver">Silver</option>
+              <option value="Gold">Gold</option>
+              <option value="Platinum">Platinum</option>
+            </select>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="weapon">Primary Weapon *</label>
+            <input
+              type="text"
+              id="weapon"
+              name="weapon"
+              value={formData.weapon}
+              onChange={handleChange}
+              placeholder="e.g. Runed Claymore"
+              required
+            />
+          </div>
+        </div>
+
         <div className="form-group">
-          <label htmlFor="weapon">Primary Weapon</label>
-          <input
-            type="text"
-            id="weapon"
-            name="weapon"
-            placeholder="e.g. Broadsword, Elder Staff"
-            value={formData.weapon}
+          <label htmlFor="backstory">Backstory / Origin</label>
+          <textarea
+            id="backstory"
+            name="backstory"
+            rows="4"
+            value={formData.backstory}
             onChange={handleChange}
-            autoComplete="off"
+            placeholder="Describe where this hero comes from and their past feats..."
           />
         </div>
 
-        <div className="form-group">
-          <label>Class</label>
-          <div className="options-grid">
-            {classes.map((cls) => (
-              <div
-                key={cls}
-                className={`option-card ${formData.class === cls ? 'selected' : ''}`}
-                onClick={() => handleOptionClick('class', cls)}
-              >
-                {cls}
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="form-group">
-          <label>Element Mastery</label>
-          <div className="options-grid">
-            {elements.map((el) => (
-              <div
-                key={el}
-                className={`option-card ${formData.element === el ? 'selected' : ''}`}
-                onClick={() => handleOptionClick('element', el)}
-              >
-                {el}
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="form-group">
-          <label>Starting Rank</label>
-          <div className="options-grid">
-            {ranks.map((r) => (
-              <div
-                key={r}
-                className={`option-card ${formData.rank === r ? 'selected' : ''}`}
-                onClick={() => handleOptionClick('rank', r)}
-              >
-                {r}
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <button 
-          type="submit" 
-          className="submit-btn" 
-          disabled={isSubmitting}
-        >
-          {isSubmitting ? 'Recruiting...' : 'Seal the Pact ⚔️'}
+        <button type="submit" className="btn-submit" disabled={loading}>
+          {loading ? 'Registering Hero...' : '⚔️ Complete Guild Registration'}
         </button>
       </form>
     </div>

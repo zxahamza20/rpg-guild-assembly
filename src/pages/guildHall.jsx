@@ -63,6 +63,7 @@ const GuildHall = () => {
   if (loading) {
     return (
       <div className="guild-hall-container">
+        <div className="guild-hall-bg"></div>
         <div className="status-message">
           <p className="pulse-text">🔮 Summoning the Guild Roster...</p>
         </div>
@@ -72,6 +73,8 @@ const GuildHall = () => {
 
   return (
     <div className="guild-hall-container">
+      <div className="guild-hall-bg"></div>
+
       <header className="guild-header">
         <div>
           <h2>🏰 Guild Hall Roster</h2>
@@ -89,7 +92,6 @@ const GuildHall = () => {
         </div>
       </header>
 
-      {/* Guild Analytics Banner */}
       {adventurers.length > 0 && (
         <div className="stats-banner">
           <div className="stat-card">
@@ -109,7 +111,6 @@ const GuildHall = () => {
         </div>
       )}
 
-      {/* Empty State Guardrail */}
       {adventurers.length === 0 ? (
         <div className="empty-state">
           <div className="empty-icon">🛡️</div>

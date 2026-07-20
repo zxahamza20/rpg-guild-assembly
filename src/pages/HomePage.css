@@ -1,44 +1,58 @@
 .home-container {
-  max-width: 1000px;
+  width: 100%;
+  max-width: 1200px;
   margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.home-page-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: 
+    linear-gradient(180deg, rgba(13, 13, 18, 0.25) 0%, rgba(13, 13, 18, 0.45) 100%),
+    url('../assets/guildHall.jpeg') no-repeat center center / cover;
+  z-index: -1;
+  pointer-events: none;
 }
 
 .hero-banner {
-  background: linear-gradient(135deg, #181824 0%, #0d0d12 100%);
-  border: 1px solid #2d2d3d;
-  border-radius: 16px;
-  padding: 3.5rem 2.5rem;
   text-align: center;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
   margin-bottom: 2.5rem;
   position: relative;
-  overflow: hidden;
+  padding: 2rem 0;
 }
 
 .hero-badge {
   display: inline-block;
-  background-color: #4f46e520;
-  color: #818cf8;
-  border: 1px solid #6366f1;
+  background-color: rgba(79, 70, 229, 0.45);
+  color: #c7d2fe;
+  border: 1px solid #818cf8;
   padding: 0.35rem 1rem;
   border-radius: 20px;
   font-size: 0.85rem;
   font-weight: 600;
   margin-bottom: 1.25rem;
+  backdrop-filter: blur(4px);
 }
 
 .guild-title {
-  font-size: 2.8rem;
+  font-size: 3.2rem;
   margin: 0 0 0.75rem 0;
-  color: #f3f4f6;
+  color: #ffffff;
   letter-spacing: -0.5px;
+  text-shadow: 0 4px 16px rgba(0, 0, 0, 0.9);
 }
 
 .guild-tagline {
-  color: #9ca3af;
+  color: #f3f4f6;
   font-style: italic;
-  font-size: 1.15rem;
+  font-size: 1.25rem;
   margin: 0 0 2rem 0;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
 }
 
 .hero-actions {
@@ -56,7 +70,7 @@
   font-weight: 700;
   font-size: 1rem;
   transition: all 0.2s ease;
-  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.4);
+  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.6);
 }
 
 .btn-enter-hall:hover {
@@ -65,19 +79,20 @@
 }
 
 .btn-recruit-home {
-  background-color: #252533;
-  color: #f3f4f6;
+  background-color: rgba(17, 24, 39, 0.65);
+  color: #ffffff;
   padding: 0.9rem 1.75rem;
   border-radius: 8px;
   text-decoration: none;
   font-weight: 600;
   font-size: 1rem;
   transition: all 0.2s ease;
-  border: 1px solid #374151;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(8px);
 }
 
 .btn-recruit-home:hover {
-  background-color: #323246;
+  background-color: rgba(31, 41, 55, 0.85);
   transform: translateY(-2px);
 }
 
@@ -88,16 +103,18 @@
 }
 
 .detail-card {
-  background-color: #16161f;
-  border: 1px solid #2d2d3d;
+  background-color: rgba(17, 24, 39, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 12px;
   padding: 1.75rem;
   transition: transform 0.2s ease, border-color 0.2s ease;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
 .detail-card:hover {
   transform: translateY(-3px);
-  border-color: #4f46e5;
+  border-color: #818cf8;
 }
 
 .card-icon {
@@ -107,17 +124,17 @@
 
 .detail-card h3 {
   margin: 0 0 0.5rem 0;
-  font-size: 1.25rem;
-  color: #f3f4f6;
+  font-size: 1.3rem;
+  color: #ffffff;
 }
 
 .detail-card p {
-  color: #9ca3af;
+  color: #f3f4f6;
   line-height: 1.6;
   margin: 0;
   font-size: 0.95rem;
 }
 
 .detail-card strong {
-  color: #e5e7eb;
+  color: #ffffff;
 }

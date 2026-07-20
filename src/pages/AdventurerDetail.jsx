@@ -6,11 +6,14 @@ import './AdventurerDetail.css';
 const AdventurerDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+
   const [hero, setHero] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [deleting, setDeleting] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
   useEffect(() => {
-    const fetchHeroDetail = async () => {
+    const fetchHero = async () => {
       try {
         setLoading(true);
         const { data, error } = await supabase
@@ -21,124 +24,129 @@ const AdventurerDetail = () => {
 
         if (error) throw error;
         setHero(data);
-      } catch (error) {
-        console.error('Error fetching adventurer details:', error);
+      } catch (err) {
+        setErrorMsg('Hero not found or removed from the ledger.');
       } finally {
         setLoading(false);
       }
     };
 
-    if (id) fetchHeroDetail();
+    fetchHero();
   }, [id]);
 
-  const calculateCombatPower = (adventurer) => {
-    if (!adventurer) return 0;
+  const handleDelete = async () => {
+    const confirmed = window.confirm(
+      `Are you sure you want to banish ${hero.name} from the guild? This action cannot be undone.`
+    );
 
-    let base = 1000;
+    if (!confirmed) return;
 
-    const rankMultipliers = {
-      Bronze: 1.0,
-      Silver: 1.5,
-      Gold: 2.2,
-      Platinum: 3.5,
-    };
+    try {
+      setDeleting(true);
+      const { error } = await supabase
+        .from('adventurers')
+        .delete()
+        .eq('id', id);
 
-    const classBonuses = {
-      Warrior: 450,
-      Mage: 500,
-      Rogue: 400,
-      Cleric: 350,
-    };
-
-    const multiplier = rankMultipliers[adventurer.rank] || 1.0;
-    const bonus = classBonuses[adventurer.class] || 200;
-
-    return Math.floor((base + bonus) * multiplier);
+      if (error) throw error;
+      navigate('/guild-hall');
+    } catch (err) {
+      setErrorMsg(err.message || 'Failed to banish hero.');
+      setDeleting(false);
+    }
   };
 
-  const getHeroBackstory = (adventurer) => {
-    if (adventurer.backstory) return adventurer.backstory;
-
-    return `${adventurer.name} is a renowned ${adventurer.class} hailing from the distant lands. Master of the ${adventurer.element} element, they wield their trusted ${adventurer.weapon} with unmatched skill, earning their respected ${adventurer.rank} rank within the guild.`;
+  const calculateCP = (rank, heroClass) => {
+    const rankMultipliers = { Bronze: 1.0, Silver: 1.5, Gold: 2.2, Platinum: 3.5 };
+    const classBonuses = { Warrior: 450, Mage: 500, Rogue: 400, Cleric: 350 };
+    const mult = rankMultipliers[rank] || 1.0;
+    const bonus = classBonuses[heroClass] || 200;
+    return Math.floor((1000 + bonus) * mult);
   };
 
   if (loading) {
     return (
       <div className="detail-container">
+        <div className="hero-details-bg"></div>
         <div className="status-message">
-          <p>📜 Inspecting Hero Credentials...</p>
+          <p className="pulse-text">🔮 Reading the Ancient Scroll...</p>
         </div>
       </div>
     );
   }
 
-  if (!hero) {
+  if (errorMsg || !hero) {
     return (
       <div className="detail-container">
+        <div className="hero-details-bg"></div>
         <div className="empty-state">
-          <h3>Hero Not Found</h3>
-          <p>No adventurer matching this ledger entry was found in the database.</p>
-          <button onClick={() => navigate('/')} className="btn-secondary">
-            Back to Guild Hall
-          </button>
+          <h3>⚠️ Hero Record Missing</h3>
+          <p>{errorMsg || 'Could not locate this adventurer.'}</p>
+          <Link to="/guild-hall" className="btn-secondary">
+            Return to Guild Hall
+          </Link>
         </div>
       </div>
     );
   }
-
-  const combatPower = calculateCombatPower(hero);
 
   return (
     <div className="detail-container">
-      <div className="detail-card">
-        <div className="detail-header">
+      <div className="hero-details-bg"></div>
+
+      <div className="detail-nav">
+        <Link to="/guild-hall" className="btn-secondary">
+          ← Back to Roster
+        </Link>
+      </div>
+
+      <div className="hero-profile-card">
+        <header className="profile-header">
           <div>
-            <span className="rank-badge">{hero.rank} Rank</span>
+            <span className="profile-badge">{hero.element} Element</span>
             <h2>{hero.name}</h2>
-            <p className="element-sub">{hero.element} Elemental Specialist</p>
+            <p className="hero-subtext">
+              {hero.rank} Rank • {hero.class}
+            </p>
           </div>
           <div className="cp-badge">
             <span className="cp-label">Combat Power</span>
-            <span className="cp-value">⚔️ {combatPower.toLocaleString()} CP</span>
+            <span className="cp-value">⚔️ {calculateCP(hero.rank, hero.class).toLocaleString()}</span>
+          </div>
+        </header>
+
+        <hr className="profile-divider" />
+
+        <div className="profile-stats-grid">
+          <div className="stat-box">
+            <span className="box-label">Primary Weapon</span>
+            <span className="box-value">🗡️ {hero.weapon}</span>
+          </div>
+          <div className="stat-box">
+            <span className="box-label">Guild Standing</span>
+            <span className="box-value">🏅 {hero.rank} Adventurer</span>
           </div>
         </div>
 
-        <hr className="divider" />
-
-        <div className="attributes-grid">
-          <div className="attr-item">
-            <span className="attr-label">Class</span>
-            <span className="attr-value">{hero.class}</span>
-          </div>
-          <div className="attr-item">
-            <span className="attr-label">Primary Weapon</span>
-            <span className="attr-value">{hero.weapon}</span>
-          </div>
-          <div className="attr-item">
-            <span className="attr-label">Element</span>
-            <span className="attr-value">{hero.element}</span>
-          </div>
-          <div className="attr-item">
-            <span className="attr-label">Recruitment Date</span>
-            <span className="attr-value">
-              {new Date(hero.created_at).toLocaleDateString()}
-            </span>
-          </div>
+        <div className="profile-section">
+          <h3>📜 Hero Backstory & Records</h3>
+          <p className="backstory-text">
+            {hero.backstory || 'No recorded history available for this adventurer.'}
+          </p>
         </div>
 
-        <div className="bio-section">
-          <h3>📜 Guild Ledger Bio & Backstory</h3>
-          <p>{getHeroBackstory(hero)}</p>
-        </div>
-
-        <div className="detail-actions">
-          <Link to="/" className="btn-secondary">
-            ⬅️ Back to Guild Hall
+        <footer className="profile-actions">
+          <Link to={`/edit/${hero.id}`} className="action-btn btn-edit-hero">
+            ⚙️ Edit Profile
           </Link>
-          <Link to={`/edit/${hero.id}`} className="btn-primary">
-            ⚙️ Modify Registration
-          </Link>
-        </div>
+          <button
+            onClick={handleDelete}
+            className="action-btn btn-banish-hero"
+            disabled={deleting}
+          >
+            {deleting ? 'Banishing...' : '🔥 Banish from Guild'}
+          </button>
+        </footer>
       </div>
     </div>
   );
