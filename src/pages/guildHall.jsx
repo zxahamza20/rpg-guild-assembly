@@ -40,11 +40,31 @@ const GuildHall = () => {
     }
   };
 
+  const calculateTotalCP = () => {
+    const rankMultipliers = { Bronze: 1.0, Silver: 1.5, Gold: 2.2, Platinum: 3.5 };
+    const classBonuses = { Warrior: 450, Mage: 500, Rogue: 400, Cleric: 350 };
+
+    return adventurers.reduce((total, hero) => {
+      const mult = rankMultipliers[hero.rank] || 1.0;
+      const bonus = classBonuses[hero.class] || 200;
+      return total + Math.floor((1000 + bonus) * mult);
+    }, 0);
+  };
+
+  const getDominantElement = () => {
+    if (adventurers.length === 0) return 'None';
+    const counts = {};
+    adventurers.forEach((h) => {
+      counts[h.element] = (counts[h.element] || 0) + 1;
+    });
+    return Object.keys(counts).reduce((a, b) => (counts[a] > counts[b] ? a : b));
+  };
+
   if (loading) {
     return (
       <div className="guild-hall-container">
         <div className="status-message">
-          <p>🔮 Summoning the Guild Roster...</p>
+          <p className="pulse-text">🔮 Summoning the Guild Roster...</p>
         </div>
       </div>
     );
@@ -64,10 +84,32 @@ const GuildHall = () => {
         </Link>
       </header>
 
+      {/* Guild Analytics Banner */}
+      {adventurers.length > 0 && (
+        <div className="stats-banner">
+          <div className="stat-card">
+            <span className="stat-label">Total Squad CP</span>
+            <span className="stat-value">⚔️ {calculateTotalCP().toLocaleString()}</span>
+          </div>
+          <div className="stat-card">
+            <span className="stat-label">Dominant Element</span>
+            <span className="stat-value">✨ {getDominantElement()}</span>
+          </div>
+          <div className="stat-card">
+            <span className="stat-label">Platinum Heroes</span>
+            <span className="stat-value">
+              🏆 {adventurers.filter((a) => a.rank === 'Platinum').length}
+            </span>
+          </div>
+        </div>
+      )}
+
+      {/* Empty State Guardrail */}
       {adventurers.length === 0 ? (
         <div className="empty-state">
+          <div className="empty-icon">🛡️</div>
           <h3>The Guild Hall is Quiet...</h3>
-          <p>No adventurers have joined your ranks yet!</p>
+          <p>No adventurers have joined your ranks yet.</p>
           <Link to="/create" className="btn-secondary">
             Recruit Your First Hero ⚔️
           </Link>
@@ -75,7 +117,10 @@ const GuildHall = () => {
       ) : (
         <div className="adventurers-grid">
           {adventurers.map((hero) => (
-            <div key={hero.id} className="adventurer-card">
+            <div
+              key={hero.id}
+              className={`adventurer-card border-${hero.element?.toLowerCase()}`}
+            >
               <div className="card-header">
                 <span className={`element-tag ${getElementBadgeClass(hero.element)}`}>
                   {hero.element}

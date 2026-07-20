@@ -11,9 +11,10 @@
 }
 
 .guild-header h2 {
-  font-size: 2rem;
+  font-size: 2.2rem;
   margin: 0;
   color: #f3f4f6;
+  letter-spacing: -0.5px;
 }
 
 .subtitle {
@@ -21,21 +22,62 @@
   margin-top: 0.25rem;
 }
 
+/* Stats Banner */
+.stats-banner {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+.stat-card {
+  background-color: #16161f;
+  border: 1px solid #2d2d3d;
+  padding: 1.25rem;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.stat-label {
+  display: block;
+  font-size: 0.75rem;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 0.25rem;
+}
+
+.stat-value {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #f3f4f6;
+}
+
+/* Status & Empty States */
 .status-message, .empty-state {
   text-align: center;
-  padding: 4rem 2rem;
+  padding: 5rem 2rem;
   background-color: #16161f;
   border-radius: 12px;
   border: 1px dashed #2d2d3d;
   color: #9ca3af;
 }
 
-.empty-state h3 {
-  color: #f3f4f6;
-  font-size: 1.5rem;
-  margin-bottom: 0.5rem;
+.empty-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
 }
 
+.pulse-text {
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* Adventurers Grid */
 .adventurers-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -50,13 +92,21 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  transition: transform 0.2s ease, border-color 0.2s ease;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .adventurer-card:hover {
-  transform: translateY(-4px);
-  border-color: #4f46e5;
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.6);
 }
+
+/* Elemental Borders on Hover */
+.border-fire:hover { border-color: #ef4444; }
+.border-water:hover { border-color: #3b82f6; }
+.border-earth:hover { border-color: #22c55e; }
+.border-air:hover { border-color: #38bdf8; }
+.border-light:hover { border-color: #eab308; }
+.border-dark:hover { border-color: #a855f7; }
 
 .card-header {
   display: flex;
@@ -92,7 +142,7 @@
 
 .card-body h3 {
   margin: 0 0 0.5rem 0;
-  font-size: 1.25rem;
+  font-size: 1.3rem;
   color: #f3f4f6;
 }
 
