@@ -64,6 +64,18 @@ const AdventurerDetail = () => {
     return Math.floor((1000 + bonus) * mult);
   };
 
+  const getElementBadgeClass = (element) => {
+    switch (element?.toLowerCase()) {
+      case 'fire': return 'element-fire';
+      case 'water': return 'element-water';
+      case 'earth': return 'element-earth';
+      case 'air': return 'element-air';
+      case 'light': return 'element-light';
+      case 'dark': return 'element-dark';
+      default: return '';
+    }
+  };
+
   if (loading) {
     return (
       <div className="detail-container">
@@ -90,6 +102,11 @@ const AdventurerDetail = () => {
     );
   }
 
+  // Parse elements if stored as string
+  const elements = hero.elements ? 
+    hero.elements.split(', ').filter(e => e) : 
+    [hero.element];
+
   return (
     <div className="detail-container">
       <div className="hero-details-bg"></div>
@@ -103,7 +120,16 @@ const AdventurerDetail = () => {
       <div className="hero-profile-card">
         <header className="profile-header">
           <div>
-            <span className="profile-badge">{hero.element} Element</span>
+            <div className="element-bubbles">
+              {elements.map((el, index) => (
+                <span 
+                  key={index}
+                  className={`element-tag ${getElementBadgeClass(el)}`}
+                >
+                  {el}
+                </span>
+              ))}
+            </div>
             <h2>{hero.name}</h2>
             <p className="hero-subtext">
               {hero.rank} Rank • {hero.class}

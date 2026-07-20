@@ -53,11 +53,43 @@ const GuildHall = () => {
 
   const getDominantElement = () => {
     if (adventurers.length === 0) return 'None';
+    
     const counts = {};
-    adventurers.forEach((h) => {
-      counts[h.element] = (counts[h.element] || 0) + 1;
+    
+    adventurers.forEach((hero) => {
+      // Parse elements if stored as string, otherwise use single element
+      const elements = hero.elements ? 
+        hero.elements.split(', ').filter(e => e) : 
+        [hero.element];
+      
+      // Count each element
+      elements.forEach(el => {
+        if (el) {
+          counts[el] = (counts[el] || 0) + 1;
+        }
+      });
     });
-    return Object.keys(counts).reduce((a, b) => (counts[a] > counts[b] ? a : b));
+
+    // Find the maximum count
+    let maxCount = 0;
+    let dominantElements = [];
+    
+    for (const [element, count] of Object.entries(counts)) {
+      if (count > maxCount) {
+        maxCount = count;
+        dominantElements = [element];
+      } else if (count === maxCount) {
+        dominantElements.push(element);
+      }
+    }
+
+    // If there's a tie, pick one randomly
+    if (dominantElements.length > 1) {
+      const randomIndex = Math.floor(Math.random() * dominantElements.length);
+      return dominantElements[randomIndex];
+    }
+
+    return dominantElements[0] || 'None';
   };
 
   if (loading) {
