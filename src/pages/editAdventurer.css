@@ -333,6 +333,66 @@
   animation: pulse-glow 2s infinite;
 }
 
+/* Race Button Styles */
+.race-group {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 0.75rem;
+}
+
+.race-btn {
+  min-width: 90px;
+  padding: 0.6rem 0.8rem;
+  border-radius: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  position: relative;
+}
+
+.race-btn:hover:not(.selected) {
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.race-btn.selected {
+  transform: translateY(-2px) scale(1.02);
+  animation: pulse-glow 2s infinite;
+}
+
+.race-btn .option-icon {
+  font-size: 1.5rem;
+}
+
+.race-btn .option-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.race-btn .check-mark {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #4f46e5;
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: bold;
+  box-shadow: 0 0 10px rgba(79, 70, 229, 0.5);
+}
+
 @keyframes pulse-glow {
   0%, 100% { transform: translateY(-2px) scale(1.02); }
   50% { transform: translateY(-2px) scale(1.05); }
@@ -414,5 +474,9 @@
   .avatar-container {
     width: 100px;
     height: 100px;
+  }
+  
+  .race-group {
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
   }
 }

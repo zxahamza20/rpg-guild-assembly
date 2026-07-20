@@ -13,13 +13,33 @@ const EditAdventurer = () => {
     elements: ['Fire'],
     rank: 'Bronze',
     weapon: '',
-    backstory: ''
+    backstory: '',
+    race: 'Human',
+    signature_move: '',
+    signature_ability: '',
+    level: 1,
+    quests_completed: 0
   });
 
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [selectedElements, setSelectedElements] = useState(['Fire']);
+
+  // Race data with icons and colors
+  const races = {
+    Human: { icon: '🧑', color: '#fbbf24', bg: 'rgba(251, 191, 36, 0.15)', border: 'rgba(251, 191, 36, 0.3)' },
+    Elf: { icon: '🧝', color: '#34d399', bg: 'rgba(52, 211, 153, 0.15)', border: 'rgba(52, 211, 153, 0.3)' },
+    Dwarf: { icon: '⛏️', color: '#f59e0b', bg: 'rgba(245, 158, 11, 0.15)', border: 'rgba(245, 158, 11, 0.3)' },
+    Orc: { icon: '👹', color: '#ef4444', bg: 'rgba(239, 68, 68, 0.15)', border: 'rgba(239, 68, 68, 0.3)' },
+    Dragonborn: { icon: '🐉', color: '#f97316', bg: 'rgba(249, 115, 22, 0.15)', border: 'rgba(249, 115, 22, 0.3)' },
+    Halfling: { icon: '🍃', color: '#22c55e', bg: 'rgba(34, 197, 94, 0.15)', border: 'rgba(34, 197, 94, 0.3)' },
+    Gnome: { icon: '🔧', color: '#8b5cf6', bg: 'rgba(139, 92, 246, 0.15)', border: 'rgba(139, 92, 246, 0.3)' },
+    Tiefling: { icon: '😈', color: '#ef4444', bg: 'rgba(239, 68, 68, 0.15)', border: 'rgba(239, 68, 68, 0.3)' },
+    Aasimar: { icon: '👼', color: '#fcd34d', bg: 'rgba(252, 211, 77, 0.15)', border: 'rgba(252, 211, 77, 0.3)' },
+    'Half-Elf': { icon: '🧝‍♂️', color: '#6ee7b7', bg: 'rgba(110, 231, 183, 0.15)', border: 'rgba(110, 231, 183, 0.3)' },
+    'Half-Orc': { icon: '👊', color: '#fb923c', bg: 'rgba(251, 146, 60, 0.15)', border: 'rgba(251, 146, 60, 0.3)' }
+  };
 
   // Class-specific backstories
   const classBackstories = {
@@ -51,7 +71,17 @@ const EditAdventurer = () => {
             data.elements.split(', ').filter(e => e) : 
             ['Fire'];
           
-          setFormData(data);
+          // Set default values for new fields if they don't exist
+          const updatedData = {
+            ...data,
+            race: data.race || 'Human',
+            signature_move: data.signature_move || '',
+            signature_ability: data.signature_ability || '',
+            level: data.level || 1,
+            quests_completed: data.quests_completed || 0
+          };
+          
+          setFormData(updatedData);
           setSelectedElements(elementsArray);
         }
       } catch (err) {
@@ -69,6 +99,11 @@ const EditAdventurer = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleNumberChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: parseInt(value) || 0 }));
+  };
+
   const handleClassSelect = (classType) => {
     setFormData(prev => ({ 
       ...prev, 
@@ -79,6 +114,10 @@ const EditAdventurer = () => {
 
   const handleRankSelect = (rank) => {
     setFormData(prev => ({ ...prev, rank }));
+  };
+
+  const handleRaceSelect = (race) => {
+    setFormData(prev => ({ ...prev, race }));
   };
 
   const handleElementToggle = (element) => {
@@ -334,6 +373,60 @@ const EditAdventurer = () => {
           </div>
         </div>
 
+        {/* Race Selection as Buttons */}
+        <div className="form-group">
+          <label>Race / Ancestry</label>
+          <div className="button-group race-group">
+            {Object.entries(races).map(([race, info]) => {
+              const isSelected = formData.race === race;
+              return (
+                <button
+                  key={race}
+                  type="button"
+                  className={`option-btn race-btn ${isSelected ? 'selected' : ''}`}
+                  style={{
+                    backgroundColor: isSelected ? info.bg : 'rgba(255,255,255,0.05)',
+                    borderColor: isSelected ? info.color : 'rgba(255,255,255,0.15)',
+                    color: isSelected ? info.color : '#9ca3af',
+                    boxShadow: isSelected ? `0 0 30px ${info.color}30` : 'none'
+                  }}
+                  onClick={() => handleRaceSelect(race)}
+                >
+                  <span className="option-icon">{info.icon}</span>
+                  <span className="option-label">{race}</span>
+                  {isSelected && <span className="check-mark">✓</span>}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className="form-row">
+          <div className="form-group">
+            <label htmlFor="level">Level</label>
+            <input
+              type="number"
+              id="level"
+              name="level"
+              value={formData.level}
+              onChange={handleNumberChange}
+              min="1"
+              max="100"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="quests_completed">Quests Completed</label>
+            <input
+              type="number"
+              id="quests_completed"
+              name="quests_completed"
+              value={formData.quests_completed}
+              onChange={handleNumberChange}
+              min="0"
+            />
+          </div>
+        </div>
+
         <div className="form-group">
           <label htmlFor="weapon">Primary Weapon *</label>
           <input
@@ -343,6 +436,30 @@ const EditAdventurer = () => {
             value={formData.weapon}
             onChange={handleChange}
             required
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="signature_move">Signature Move</label>
+          <input
+            type="text"
+            id="signature_move"
+            name="signature_move"
+            value={formData.signature_move}
+            onChange={handleChange}
+            placeholder="e.g. Inferno Slash"
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="signature_ability">Signature Ability</label>
+          <input
+            type="text"
+            id="signature_ability"
+            name="signature_ability"
+            value={formData.signature_ability}
+            onChange={handleChange}
+            placeholder="e.g. Shadow Step"
           />
         </div>
 

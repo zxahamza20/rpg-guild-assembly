@@ -132,7 +132,7 @@ const AdventurerDetail = () => {
             </div>
             <h2>{hero.name}</h2>
             <p className="hero-subtext">
-              {hero.rank} Rank • {hero.class}
+              {hero.rank} Rank • {hero.class} • {hero.race || 'Unknown Race'} • Level {hero.level || 1}
             </p>
           </div>
           <div className="cp-badge">
@@ -152,9 +152,24 @@ const AdventurerDetail = () => {
             <span className="box-label">Guild Standing</span>
             <span className="box-value">🏅 {hero.rank} Adventurer</span>
           </div>
+          <div className="stat-box">
+            <span className="box-label">Quests Completed</span>
+            <span className="box-value">📜 {hero.quests_completed || 0}</span>
+          </div>
+          <div className="stat-box">
+            <span className="box-label">Signature Move</span>
+            <span className="box-value">⚡ {hero.signature_move || 'None'}</span>
+          </div>
         </div>
 
         <div className="profile-section">
+          <h3>🎯 Signature Ability</h3>
+          <p className="backstory-text" style={{ fontSize: '1.1rem', color: '#c7d2fe' }}>
+            {hero.signature_ability || 'No signature ability recorded.'}
+          </p>
+        </div>
+
+        <div className="profile-section" style={{ marginTop: '1.5rem' }}>
           <h3>📜 Hero Backstory & Records</h3>
           <p className="backstory-text">
             {hero.backstory || 'No recorded history available for this adventurer.'}
