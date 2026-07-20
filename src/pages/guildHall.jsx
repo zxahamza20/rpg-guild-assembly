@@ -97,13 +97,11 @@ const GuildHall = () => {
     return dominantElements[0] || 'None';
   };
 
-  // Calculate Success Score
   const calculateSuccessScore = () => {
     if (adventurers.length === 0) return 0;
     
     let score = 0;
     
-    // Factor 1: Team composition diversity
     const classes = new Set(adventurers.map(h => h.class));
     const elements = new Set();
     adventurers.forEach(h => {
@@ -115,31 +113,25 @@ const GuildHall = () => {
     if (elements.size >= 4) score += 15;
     if (classes.size >= 4) score += 10;
     
-    // Factor 2: High ranks
     const platinumCount = adventurers.filter(h => h.rank === 'Platinum').length;
     const goldCount = adventurers.filter(h => h.rank === 'Gold').length;
     score += platinumCount * 10 + goldCount * 5;
     
-    // Factor 3: Average level
     const avgLevel = adventurers.reduce((sum, h) => sum + (h.level || 1), 0) / adventurers.length;
     score += Math.min(avgLevel * 0.5, 20);
     
-    // Factor 4: Quest completion
     const totalQuests = adventurers.reduce((sum, h) => sum + (h.quests_completed || 0), 0);
     score += Math.min(totalQuests * 0.2, 15);
     
-    // Factor 5: Signature abilities
     const hasSignature = adventurers.filter(h => h.signature_ability).length;
     score += Math.min(hasSignature * 2, 10);
     
-    // Factor 6: Team size bonus
     if (adventurers.length >= 5) score += 5;
     if (adventurers.length >= 10) score += 5;
     
     return Math.min(Math.round(score), 100);
   };
 
-  // Get success tier
   const getSuccessTier = (score) => {
     if (score >= 80) return { label: '⚔️ Legendary Guild', color: '#ffd700', glow: '0 0 40px rgba(255, 215, 0, 0.4)' };
     if (score >= 60) return { label: '🏆 Elite Company', color: '#c0c0c0', glow: '0 0 30px rgba(192, 192, 192, 0.3)' };
@@ -148,7 +140,6 @@ const GuildHall = () => {
     return { label: '🛡️ New Recruits', color: '#6b7280', glow: '0 0 20px rgba(107, 114, 128, 0.2)' };
   };
 
-  // Calculate class percentages
   const getClassPercentages = () => {
     const total = adventurers.length;
     if (total === 0) return {};
@@ -165,7 +156,6 @@ const GuildHall = () => {
     return percentages;
   };
 
-  // Calculate element percentages
   const getElementPercentages = () => {
     const total = adventurers.length;
     if (total === 0) return {};
@@ -222,7 +212,6 @@ const GuildHall = () => {
         </div>
       </header>
 
-      {/* Success Score Banner */}
       {adventurers.length > 0 && (
         <div className="success-banner" style={{ 
           borderColor: successTier.color,
@@ -271,7 +260,6 @@ const GuildHall = () => {
         </div>
       )}
 
-      {/* Crew Analytics Section */}
       {adventurers.length > 0 && (
         <div className="crew-analytics">
           <h3>📊 Crew Analytics</h3>
@@ -368,8 +356,8 @@ const GuildHall = () => {
                   <p className="hero-class">Class: <strong>{hero.class}</strong></p>
                   <p className="hero-weapon">Primary Weapon: <strong>{hero.weapon}</strong></p>
                   {hero.level && (
-                    <p className="hero-level" style={{ fontSize: '0.85rem', color: '#6b7280', marginTop: '0.25rem' }}>
-                      Level {hero.level} • {hero.quests_completed || 0} Quests
+                    <p className="hero-level" style={{ fontSize: '1rem', color: '#d9e5ff', marginTop: '0.25rem' }}>
+                      Level {hero.level}
                     </p>
                   )}
                 </div>

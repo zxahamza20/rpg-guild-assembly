@@ -206,7 +206,6 @@
   color: #c7d2fe;
 }
 
-/* Animations */
 @keyframes fadeInDown {
   from {
     opacity: 0;
@@ -239,7 +238,6 @@
   100% { transform: translateX(100%) rotate(45deg); }
 }
 
-/* Responsive design */
 @media (max-width: 768px) {
   .guild-title {
     font-size: 2.5rem;

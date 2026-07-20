@@ -25,8 +25,6 @@ const EditAdventurer = () => {
   const [submitting, setSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [selectedElements, setSelectedElements] = useState(['Fire']);
-
-  // Class restrictions - defines what elements and abilities each class can have
   const classRestrictions = {
     Warrior: {
       allowedElements: ['Fire', 'Earth', 'Light'],
@@ -90,7 +88,6 @@ const EditAdventurer = () => {
     }
   };
 
-  // Race data with icons and colors
   const races = {
     Human: { icon: '🧑', color: '#fbbf24', bg: 'rgba(251, 191, 36, 0.15)', border: 'rgba(251, 191, 36, 0.3)' },
     Elf: { icon: '🧝', color: '#34d399', bg: 'rgba(52, 211, 153, 0.15)', border: 'rgba(52, 211, 153, 0.3)' },
@@ -105,7 +102,6 @@ const EditAdventurer = () => {
     'Half-Orc': { icon: '👊', color: '#fb923c', bg: 'rgba(251, 146, 60, 0.15)', border: 'rgba(251, 146, 60, 0.3)' }
   };
 
-  // Class-specific backstories
   const classBackstories = {
     Warrior: `Born in the borderlands of the Shattered Peaks, this warrior trained from youth in the ancient combat arts. They've weathered countless battles, each scar telling a story of survival and honor. Their blade has tasted the blood of both beasts and men, and they seek only to find a worthy death in the service of a noble cause.`,
     
@@ -118,13 +114,11 @@ const EditAdventurer = () => {
 
   const genericBackstory = `A mysterious adventurer who appeared at the guild gates with nothing but their weapon and a burning desire for glory. Their past is shrouded in mystery, but their skill speaks volumes. They've proven themselves worthy of the Zenith Aegis.`;
 
-  // Get available elements based on selected class
   const getAvailableElements = () => {
     const restrictions = classRestrictions[formData.class];
     return restrictions ? restrictions.allowedElements : ['Fire', 'Water', 'Earth', 'Air', 'Light', 'Dark'];
   };
 
-  // Get available signature abilities based on selected class
   const getAvailableAbilities = () => {
     const restrictions = classRestrictions[formData.class];
     return restrictions ? restrictions.allowedSignatureAbilities : [];
@@ -142,16 +136,12 @@ const EditAdventurer = () => {
 
         if (error) throw error;
         if (data) {
-          // Parse elements back to array if stored as string
           const elementsArray = data.elements ? 
             data.elements.split(', ').filter(e => e) : 
             ['Fire'];
           
-          // Ensure elements are valid for the class
           const availableElements = classRestrictions[data.class]?.allowedElements || ['Fire', 'Water', 'Earth', 'Air', 'Light', 'Dark'];
           const validElements = elementsArray.filter(el => availableElements.includes(el));
-          
-          // Set default values for new fields if they don't exist
           const updatedData = {
             ...data,
             race: data.race || 'Human',
@@ -174,13 +164,10 @@ const EditAdventurer = () => {
     fetchAdventurer();
   }, [id]);
 
-  // Reset elements when class changes to ensure only allowed elements are selected
   useEffect(() => {
     const availableElements = getAvailableElements();
     setSelectedElements(prev => {
-      // Keep only elements that are allowed
       const filtered = prev.filter(el => availableElements.includes(el));
-      // If no elements remain, add the first available
       if (filtered.length === 0 && availableElements.length > 0) {
         return [availableElements[0]];
       }
@@ -216,7 +203,6 @@ const EditAdventurer = () => {
 
   const handleElementToggle = (element) => {
     const availableElements = getAvailableElements();
-    // Only allow toggling if the element is available for this class
     if (!availableElements.includes(element)) return;
     
     setSelectedElements(prev => {
@@ -230,7 +216,6 @@ const EditAdventurer = () => {
     });
   };
 
-  // Update formData when selectedElements changes
   useEffect(() => {
     setFormData(prev => ({ ...prev, elements: selectedElements }));
   }, [selectedElements]);
@@ -260,7 +245,6 @@ const EditAdventurer = () => {
     }
   };
 
-  // Get element display info
   const getElementInfo = (element) => {
     const elements = {
       Fire: { color: '#ef4444', bg: 'rgba(239, 68, 68, 0.2)', icon: '🔥', glow: '0 0 20px rgba(239, 68, 68, 0.4)' },
@@ -273,7 +257,6 @@ const EditAdventurer = () => {
     return elements[element] || { color: '#fff', bg: 'rgba(255,255,255,0.1)', icon: '⚡', glow: 'none' };
   };
 
-  // Get class display info
   const getClassInfo = (classType) => {
     const classes = {
       Warrior: { color: '#dc2626', bg: 'rgba(220, 38, 38, 0.2)', icon: '⚔️' },
@@ -284,7 +267,6 @@ const EditAdventurer = () => {
     return classes[classType] || { color: '#fff', bg: 'rgba(255,255,255,0.1)', icon: '⚔️' };
   };
 
-  // Get rank display info
   const getRankInfo = (rank) => {
     const ranks = {
       Bronze: { color: '#cd7f32', bg: 'rgba(205, 127, 50, 0.2)', icon: '🥉' },
@@ -351,7 +333,6 @@ const EditAdventurer = () => {
       {errorMsg && <div className="error-banner">{errorMsg}</div>}
 
       <form onSubmit={handleSubmit} className="hero-form">
-        {/* Character Preview/Avatar Area */}
         <div className="character-preview">
           <div className="avatar-container" style={{
             borderColor: getElementInfo(selectedElements[0] || 'Fire').color,
@@ -387,7 +368,6 @@ const EditAdventurer = () => {
           />
         </div>
 
-        {/* Class Selection as Buttons - THIS IS THE CATEGORY FIELD */}
         <div className="form-group">
           <label>Choose Your Class <span className="hint">(This will determine your available options)</span></label>
           <div className="button-group class-group">
@@ -426,7 +406,6 @@ const EditAdventurer = () => {
           )}
         </div>
 
-        {/* Element Selection as Buttons (Multiple) - RESTRICTED BY CLASS */}
         <div className="form-group">
           <label>Affiliated Elements <span className="hint">(Select up to 3 • {availableElements.length} available for {formData.class})</span></label>
           <div className="button-group element-group">
@@ -458,7 +437,6 @@ const EditAdventurer = () => {
           </div>
         </div>
 
-        {/* Rank Selection as Buttons */}
         <div className="form-group">
           <label>Guild Rank</label>
           <div className="button-group rank-group">
@@ -486,7 +464,6 @@ const EditAdventurer = () => {
           </div>
         </div>
 
-        {/* Race Selection as Buttons */}
         <div className="form-group">
           <label>Race / Ancestry</label>
           <div className="button-group race-group">
@@ -564,7 +541,6 @@ const EditAdventurer = () => {
           />
         </div>
 
-        {/* Signature Ability - RESTRICTED BY CLASS */}
         <div className="form-group">
           <label htmlFor="signature_ability">Signature Ability <span className="hint">({availableAbilities.length} available for {formData.class})</span></label>
           <select

@@ -20,7 +20,6 @@
   pointer-events: none;
 }
 
-/* Particle Effects */
 .particles {
   position: fixed;
   top: 0;
@@ -138,7 +137,6 @@
   z-index: 2;
 }
 
-/* Character Preview */
 .character-preview {
   display: flex;
   justify-content: center;
@@ -231,7 +229,6 @@
   font-family: inherit;
 }
 
-/* Button Groups */
 .button-group {
   display: flex;
   gap: 0.75rem;
@@ -314,7 +311,6 @@
   animation: pulse-glow 2s infinite;
 }
 
-/* Race Button Styles */
 .race-group {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
@@ -414,9 +410,6 @@
   animation: shimmer 3s infinite;
 }
 
-/* Add these styles to your existing CreateAdventurer.css */
-
-/* Class restriction hint */
 .class-restriction-hint {
   font-size: 0.55rem;
   color: rgba(255, 255, 255, 0.6);
@@ -424,7 +417,6 @@
   font-weight: 400;
 }
 
-/* Class description */
 .class-description {
   font-size: 0.8rem;
   font-style: italic;
@@ -435,7 +427,6 @@
   border-radius: 6px;
 }
 
-/* Element availability hint */
 .element-counter {
   font-size: 0.8rem;
   color: #9ca3af;
@@ -443,14 +434,12 @@
   margin-top: 0.25rem;
 }
 
-/* Disabled element button styling */
 .element-btn[disabled] {
   opacity: 0.3;
   cursor: not-allowed;
   transform: none !important;
 }
 
-/* Select dropdown styling */
 select option {
   background-color: #16161f;
   color: #ffffff;
@@ -476,7 +465,6 @@ select option:hover {
   transform: none;
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
   .button-group {
     flex-direction: column;

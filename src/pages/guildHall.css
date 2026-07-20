@@ -166,7 +166,6 @@
   overflow: hidden;
 }
 
-/* Card background glow effect */
 .adventurer-card::before {
   content: '';
   position: absolute;
@@ -184,7 +183,6 @@
   opacity: 0.5;
 }
 
-/* Gradient border based on class */
 .adventurer-card::after {
   content: '';
   position: absolute;
@@ -203,7 +201,6 @@
   opacity: 1;
 }
 
-/* Class-specific gradient borders */
 .adventurer-card.class-Warrior {
   --class-color-start: #dc2626;
   --class-color-end: #f97316;
@@ -224,7 +221,6 @@
   --class-color-end: #f59e0b;
 }
 
-/* Rank-based glow */
 .adventurer-card.rank-Bronze {
   box-shadow: 0 0 20px rgba(205, 127, 50, 0.1);
 }
@@ -257,7 +253,6 @@
   box-shadow: 0 10px 30px rgba(184, 184, 208, 0.4), 0 0 80px rgba(184, 184, 208, 0.2);
 }
 
-/* Character shadow effect */
 .adventurer-card .card-shadow {
   position: absolute;
   bottom: -20px;
@@ -360,7 +355,6 @@
   white-space: nowrap;
 }
 
-/* Rank-specific tag styling */
 .rank-tag.rank-Bronze {
   border-color: #cd7f32;
   color: #cd7f32;
@@ -515,7 +509,6 @@
   transform: translateY(-2px);
 }
 
-/* Success Banner */
 .success-banner {
   background: linear-gradient(135deg, rgba(17, 24, 39, 0.9), rgba(31, 41, 55, 0.7));
   border: 2px solid;
@@ -583,7 +576,6 @@
   transition: width 1s ease;
 }
 
-/* Crew Analytics */
 .crew-analytics {
   background: linear-gradient(135deg, rgba(17, 24, 39, 0.7), rgba(31, 41, 55, 0.5));
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -651,7 +643,6 @@
   text-align: right;
 }
 
-/* Updated adventurers grid with success tier border */
 .adventurers-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -660,7 +651,6 @@
   transition: all 0.5s ease;
 }
 
-/* Add CSS variables for element colors */
 :root {
   --fire-color: #ef4444;
   --water-color: #3b82f6;
@@ -670,7 +660,6 @@
   --dark-color: #8b5cf6;
 }
 
-/* Animations */
 @keyframes fadeInDown {
   from {
     opacity: 0;
@@ -703,7 +692,6 @@
   100% { transform: translateX(100%) rotate(45deg); }
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
   .guild-header {
     flex-direction: column;
@@ -738,7 +726,6 @@
   }
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .analytics-grid {
     grid-template-columns: 1fr;

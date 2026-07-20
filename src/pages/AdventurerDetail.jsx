@@ -102,7 +102,6 @@ const AdventurerDetail = () => {
     );
   }
 
-  // Parse elements if stored as string
   const elements = hero.elements ? 
     hero.elements.split(', ').filter(e => e) : 
     [hero.element];
