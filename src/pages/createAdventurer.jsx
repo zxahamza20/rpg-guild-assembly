@@ -24,6 +24,70 @@ const CreateAdventurer = () => {
   const [errorMsg, setErrorMsg] = useState('');
   const [selectedElements, setSelectedElements] = useState(['Fire']);
 
+  // Class restrictions - defines what elements and abilities each class can have
+  const classRestrictions = {
+    Warrior: {
+      allowedElements: ['Fire', 'Earth', 'Light'],
+      allowedSignatureAbilities: [
+        'Battle Cry',
+        'Shield Wall', 
+        'Berserker Rage',
+        'Whirlwind',
+        'Cleave',
+        'Execute',
+        'War Stomp'
+      ],
+      icon: '⚔️',
+      color: '#dc2626',
+      description: 'Master of arms and frontline combat'
+    },
+    Mage: {
+      allowedElements: ['Fire', 'Water', 'Air', 'Dark', 'Light'],
+      allowedSignatureAbilities: [
+        'Arcane Surge',
+        'Elemental Mastery',
+        'Mind Control',
+        'Teleportation',
+        'Fireball',
+        'Lightning Storm',
+        'Time Stop'
+      ],
+      icon: '🔮',
+      color: '#7c3aed',
+      description: 'Masters of arcane arts and elemental forces'
+    },
+    Rogue: {
+      allowedElements: ['Dark', 'Air', 'Water'],
+      allowedSignatureAbilities: [
+        'Shadow Step',
+        'Poison Mastery',
+        'Assassinate',
+        'Lockpicking',
+        'Backstab',
+        'Evasion',
+        'Sneak Attack'
+      ],
+      icon: '🗡️',
+      color: '#16a34a',
+      description: 'Stealthy operatives and masters of deception'
+    },
+    Cleric: {
+      allowedElements: ['Light', 'Water', 'Earth'],
+      allowedSignatureAbilities: [
+        'Divine Shield',
+        'Healing Light',
+        'Holy Smite',
+        'Blessing',
+        'Resurrection',
+        'Purify',
+        'Guardian Angel'
+      ],
+      icon: '✨',
+      color: '#d97706',
+      description: 'Divine warriors wielding holy power'
+    }
+  };
+
   // Race data with icons and colors
   const races = {
     Human: { icon: '🧑', color: '#fbbf24', bg: 'rgba(251, 191, 36, 0.15)', border: 'rgba(251, 191, 36, 0.3)' },
@@ -37,6 +101,18 @@ const CreateAdventurer = () => {
     Aasimar: { icon: '👼', color: '#fcd34d', bg: 'rgba(252, 211, 77, 0.15)', border: 'rgba(252, 211, 77, 0.3)' },
     'Half-Elf': { icon: '🧝‍♂️', color: '#6ee7b7', bg: 'rgba(110, 231, 183, 0.15)', border: 'rgba(110, 231, 183, 0.3)' },
     'Half-Orc': { icon: '👊', color: '#fb923c', bg: 'rgba(251, 146, 60, 0.15)', border: 'rgba(251, 146, 60, 0.3)' }
+  };
+
+  // Get available elements based on selected class
+  const getAvailableElements = () => {
+    const restrictions = classRestrictions[formData.class];
+    return restrictions ? restrictions.allowedElements : ['Fire', 'Water', 'Earth', 'Air', 'Light', 'Dark'];
+  };
+
+  // Get available signature abilities based on selected class
+  const getAvailableAbilities = () => {
+    const restrictions = classRestrictions[formData.class];
+    return restrictions ? restrictions.allowedSignatureAbilities : [];
   };
 
   // Class-specific backstories
@@ -58,6 +134,20 @@ const CreateAdventurer = () => {
       ...prev,
       backstory: classBackstories[prev.class] || genericBackstory
     }));
+  }, [formData.class]);
+
+  // Reset elements when class changes to ensure only allowed elements are selected
+  useEffect(() => {
+    const availableElements = getAvailableElements();
+    setSelectedElements(prev => {
+      // Keep only elements that are allowed
+      const filtered = prev.filter(el => availableElements.includes(el));
+      // If no elements remain, add the first available
+      if (filtered.length === 0 && availableElements.length > 0) {
+        return [availableElements[0]];
+      }
+      return filtered;
+    });
   }, [formData.class]);
 
   const handleChange = (e) => {
@@ -87,6 +177,10 @@ const CreateAdventurer = () => {
   };
 
   const handleElementToggle = (element) => {
+    const availableElements = getAvailableElements();
+    // Only allow toggling if the element is available for this class
+    if (!availableElements.includes(element)) return;
+    
     setSelectedElements(prev => {
       if (prev.includes(element)) {
         if (prev.length <= 1) return prev;
@@ -166,6 +260,10 @@ const CreateAdventurer = () => {
     return ranks[rank] || { color: '#fff', bg: 'rgba(255,255,255,0.1)', icon: '⭐' };
   };
 
+  const availableElements = getAvailableElements();
+  const availableAbilities = getAvailableAbilities();
+  const currentClassRestrictions = classRestrictions[formData.class];
+
   return (
     <div className="create-container">
       <div className="recruit-page-bg"></div>
@@ -235,13 +333,14 @@ const CreateAdventurer = () => {
           />
         </div>
 
-        {/* Class Selection as Buttons */}
+        {/* Class Selection as Buttons - THIS IS THE CATEGORY FIELD */}
         <div className="form-group">
-          <label>Choose Your Class</label>
+          <label>Choose Your Class <span className="hint">(This will determine your available options)</span></label>
           <div className="button-group class-group">
             {['Warrior', 'Mage', 'Rogue', 'Cleric'].map((classType) => {
               const info = getClassInfo(classType);
               const isSelected = formData.class === classType;
+              const restrictions = classRestrictions[classType];
               return (
                 <button
                   key={classType}
@@ -257,17 +356,27 @@ const CreateAdventurer = () => {
                 >
                   <span className="option-icon">{info.icon}</span>
                   <span className="option-label">{classType}</span>
+                  {isSelected && (
+                    <span className="class-restriction-hint">
+                      {restrictions?.allowedElements.length} elements • {restrictions?.allowedSignatureAbilities.length} abilities
+                    </span>
+                  )}
                 </button>
               );
             })}
           </div>
+          {currentClassRestrictions && (
+            <div className="class-description" style={{ color: currentClassRestrictions.color }}>
+              {currentClassRestrictions.description}
+            </div>
+          )}
         </div>
 
-        {/* Element Selection as Buttons (Multiple) */}
+        {/* Element Selection as Buttons (Multiple) - RESTRICTED BY CLASS */}
         <div className="form-group">
-          <label>Affiliated Elements <span className="hint">(Select up to 3)</span></label>
+          <label>Affiliated Elements <span className="hint">(Select up to 3 • {availableElements.length} available for {formData.class})</span></label>
           <div className="button-group element-group">
-            {['Fire', 'Water', 'Earth', 'Air', 'Light', 'Dark'].map((element) => {
+            {availableElements.map((element) => {
               const info = getElementInfo(element);
               const isSelected = selectedElements.includes(element);
               return (
@@ -402,16 +511,36 @@ const CreateAdventurer = () => {
           />
         </div>
 
+        {/* Signature Ability - RESTRICTED BY CLASS */}
         <div className="form-group">
-          <label htmlFor="signature_ability">Signature Ability</label>
-          <input
-            type="text"
+          <label htmlFor="signature_ability">Signature Ability <span className="hint">({availableAbilities.length} available for {formData.class})</span></label>
+          <select
             id="signature_ability"
             name="signature_ability"
             value={formData.signature_ability}
             onChange={handleChange}
-            placeholder="e.g. Shadow Step"
-          />
+            style={{
+              backgroundColor: 'rgba(13, 13, 18, 0.7)',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
+              color: '#ffffff',
+              padding: '0.75rem',
+              borderRadius: '8px',
+              fontSize: '0.95rem',
+              outline: 'none',
+              transition: 'all 0.3s ease',
+              cursor: 'pointer'
+            }}
+          >
+            <option value="">Select an ability...</option>
+            {availableAbilities.map(ability => (
+              <option key={ability} value={ability}>{ability}</option>
+            ))}
+          </select>
+          {availableAbilities.length === 0 && (
+            <div style={{ color: '#ef4444', fontSize: '0.85rem', marginTop: '0.25rem' }}>
+              ⚠️ No signature abilities available for this class. Please select a different class.
+            </div>
+          )}
         </div>
 
         <div className="form-group">
