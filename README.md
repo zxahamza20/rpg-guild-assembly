@@ -49,7 +49,7 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of the implemented rpg-guild-hall with CRUD:
 
-<img src='' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='https://i.imgur.com/KeQUjl5.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 GIF created with Kap (MacOS)  
 
